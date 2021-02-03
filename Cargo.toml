@@ -1,0 +1,12 @@
+[package]
+name = "ronfig"
+version = "0.1.0"
+authors = ["Mojtaba Zarezadeh <mojtab.zare@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ron = "0.6"
+serde = "1.0"
+encoding_rs_io = "0.1"
