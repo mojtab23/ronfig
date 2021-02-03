@@ -1,5 +1,6 @@
 [package]
 name = "ronfig"
+description = "Config rust with RON, Easily!"
 version = "0.1.0"
 authors = ["Mojtaba Zarezadeh <mojtab.zare@gmail.com>"]
 edition = "2018"
