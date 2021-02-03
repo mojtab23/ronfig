@@ -6,6 +6,7 @@ authors = ["Mojtaba Zarezadeh <mojtab.zare@gmail.com>"]
 edition = "2018"
 license = "MIT"
 keywords = ["config", "ron"]
+categories = ["config"]
 repository = "https://github.com/mojtab23/ronfig"
 readme = "README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
