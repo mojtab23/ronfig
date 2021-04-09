@@ -6,10 +6,10 @@
 // )]
 #![crate_name = "ronfig"]
 #![warn(
-missing_debug_implementations,
-missing_docs,
-rust_2018_idioms,
-rust_2018_compatibility
+    missing_debug_implementations,
+    missing_docs,
+    rust_2018_idioms,
+    rust_2018_compatibility
 )]
 #![warn(clippy::all)]
 #![allow(clippy::new_without_default)]
@@ -73,7 +73,6 @@ impl From<RonError> for ConfigError {
     }
 }
 
-
 impl From<io::Error> for ConfigError {
     fn from(e: io::Error) -> ConfigError {
         ConfigError::File(e)
@@ -99,7 +98,10 @@ impl Error for ConfigError {
 }
 
 /// Trait implemented by the `config!` macro.
-pub trait Config where Self: Sized, {
+pub trait Config
+where
+    Self: Sized,
+{
     /// Loads a configuration structure from a file.
     fn load<P: AsRef<Path>>(path: P) -> Result<Self, ConfigError>;
 
@@ -127,8 +129,8 @@ pub trait Config where Self: Sized, {
 }
 
 impl<T> Config for T
-    where
-        T: for<'a> Deserialize<'a> + Serialize,
+where
+    T: for<'a> Deserialize<'a> + Serialize,
 {
     fn load<P: AsRef<Path>>(path: P) -> Result<Self, ConfigError> {
         use std::{fs::File, io::Read};
@@ -161,15 +163,13 @@ impl<T> Config for T
 
     fn load_bytes_format(format: ConfigFormat, bytes: &[u8]) -> Result<Self, ConfigError> {
         match format {
-            ConfigFormat::Ron => {
-                ron::de::Deserializer::from_bytes(bytes)
-                    .and_then(|mut de| {
-                        let val = T::deserialize(&mut de)?;
-                        de.end()?;
-                        Ok(val)
-                    })
-                    .map_err(ConfigError::Parser)
-            }
+            ConfigFormat::Ron => ron::de::Deserializer::from_bytes(bytes)
+                .and_then(|mut de| {
+                    let val = T::deserialize(&mut de)?;
+                    de.end()?;
+                    Ok(val)
+                })
+                .map_err(ConfigError::Parser),
         }
     }
 
@@ -208,8 +208,9 @@ mod test {
     fn load_file() {
         let expected = TestConfig { amethyst: true };
 
-        let parsed =
-            TestConfig::load(Path::new(env!("CARGO_MANIFEST_DIR")).join("resources/test/config.ron"));
+        let parsed = TestConfig::load(
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("resources/test/config.ron"),
+        );
 
         assert_eq!(expected, parsed.unwrap());
     }
@@ -218,12 +219,15 @@ mod test {
     fn load_file_with_bom_encodings() {
         let expected = TestConfig { amethyst: true };
 
-        let utf8_bom =
-            TestConfig::load(Path::new(env!("CARGO_MANIFEST_DIR")).join("resources/test/UTF8-BOM.ron"));
-        let utf16_le_bom =
-            TestConfig::load(Path::new(env!("CARGO_MANIFEST_DIR")).join("resources/test/UTF16-LE-BOM.ron"));
-        let utf16_be_bom =
-            TestConfig::load(Path::new(env!("CARGO_MANIFEST_DIR")).join("resources/test/UTF16-BE-BOM.ron"));
+        let utf8_bom = TestConfig::load(
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("resources/test/UTF8-BOM.ron"),
+        );
+        let utf16_le_bom = TestConfig::load(
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("resources/test/UTF16-LE-BOM.ron"),
+        );
+        let utf16_be_bom = TestConfig::load(
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("resources/test/UTF16-BE-BOM.ron"),
+        );
 
         assert_eq!(
             expected,
