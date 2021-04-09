@@ -1,5 +1,5 @@
 (
     app_name:"simple app",
     workers: 4,
-    // debug: true,
+    // debug: Some(true),
 )
